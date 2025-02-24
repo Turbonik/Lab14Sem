@@ -13,11 +13,13 @@
                 if (choice != null && choice.Length > 0)
                 {
                     string[] words = choice.Split(' ');
-                    try{
+                    try
+                    {
                         memory = new IntMassive(words[0], long.Parse(words[1]));
                         break;
                     }
-                    catch (Exception ex){
+                    catch (Exception ex)
+                    {
                         Console.WriteLine(ex.Message);
                     }
                 }
@@ -33,24 +35,42 @@
                 if (choice != null && choice.Length > 0)
                 {
                     string[] words = choice.Split(' ');
+                    if (words[0].ToLower() == "exit")
+                    {
+                        break;
+                    }
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            try{
+                            try
+                            {
                                 memory = new IntMassive(words[1], long.Parse(words[2]));
                             }
-                            catch (Exception ex){
+                            catch (Exception ex)
+                            {
                                 Console.WriteLine(ex.Message);
                             }
                             break;
                         case "input":
-                            memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                            try
+                            {
+                                memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "print":
-                             memory.Element_Definition();
-                        default:
+                            try
+                            {
+                                Console.WriteLine(memory.Element_Definition(int.Parse(words[1])));
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
-
                     }
                 }
             }

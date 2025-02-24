@@ -73,17 +73,15 @@ namespace lab1vage
 
         public void PageWriter(Page page, StreamWriter writer)
         {
-            writer.WriteLine(page.Number);
-            writer.WriteLine(page.Status);
-            writer.WriteLine(page.Last_Write.Ticks);
             writer.WriteLine(page.Bitmap);
             writer.WriteLine(page.Values);
         }
     }
 
-    public interface IMemory {
+    public interface IMemory
+    {
         int Page_Number(int index);
-        int Element_Definition(int index, int variable);
+        int Element_Definition(int index);
         bool Element_Write(int index, int variable);
     }
 
@@ -102,7 +100,8 @@ namespace lab1vage
         {
             _pages = [];
             long pages_count = (array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
-            if (pages_count > MAX_PAGES){
+            if (pages_count > MAX_PAGES)
+            {
                 throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * 128}");
             }
             _pages = new Page[pages_count];
@@ -172,30 +171,49 @@ namespace lab1vage
             return need_index;
         }
 
-        public int Element_Definition(int index, int variable)
+        public int Element_Definition(int index)
         {
             int page_number = Page_Number(index);
-
-            // if (Page_Number(index) != null)
-            // {
-            //     page_number = (int)Page_Number(index);
-            //     _ = index % ARRAY_LENGTH;
-            //     variable = _pages[page_number].Values[index];
-            //     return variable;
-            // }
-            return 0;
+            if ((_pages[page_number].Bitmap[index / 8] & (1 << index % 8)) != 0)
+            {
+                throw new Exception("Указанная ячейка пуста.");
+            }
+            else
+            {
+                return _pages[page_number].Values[index % ARRAY_LENGTH];
+            }
         }
 
         public bool Element_Write(int index, int value)
         {
-            if (Page_Number(index) != null)
+            int page_number = Page_Number(index);
+            index = index % ARRAY_LENGTH;
+            if ((_pages[page_number].Bitmap[index / 8] & (1 << index % 8)) != 0)
             {
-                int page_number = (int)Page_Number(index);
-                _ = index % ARRAY_LENGTH;
+                _pages[page_number].Bitmap[index / 8] |= (byte)(1 << index % 8);
                 _pages[page_number].Values[index] = value;
-                return true;
+                _pages[page_number].Status = 1;
+                _pages[page_number].Last_Write = DateTime.Now;
             }
-            return false;
+            else
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void Exit_Command()
+        {
+            for (int i = 0; i < _pages.Length; i++)
+            {
+                if (_pages[i].Status == 1)
+                {
+                    StreamWriter writer = new StreamWriter(_file_stream);
+                    _file_stream.Seek(2, SeekOrigin.Begin);
+                    _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[i].Number, SeekOrigin.Current);
+                    handler.PageWriter(_pages[i], writer);
+                }
+            }
         }
     }
 }
