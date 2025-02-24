@@ -141,6 +141,7 @@ namespace lab1vage
                     if (_pages[i].Number == 0)
                     {
                         flag = true;
+                        Console.WriteLine("FFFFFFFF");
                         need_index = i;
                         break;
                     }
@@ -210,7 +211,7 @@ namespace lab1vage
                 {
                     StreamWriter writer = new StreamWriter(_file_stream);
                     _file_stream.Seek(2, SeekOrigin.Begin);
-                    _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[i].Number, SeekOrigin.Current);
+                    _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[i].Number - 1, SeekOrigin.Current);
                     handler.PageWriter(_pages[i], writer);
                 }
             }
