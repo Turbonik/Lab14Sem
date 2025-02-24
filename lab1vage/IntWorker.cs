@@ -81,13 +81,18 @@ namespace lab1vage
         }
     }
 
-    public class IntMassive
+    public interface IMemory {
+        int Page_Number(int index);
+        int Element_Definition(int index, int variable);
+        bool Element_Write(int index, int variable);
+    }
+
+    public class IntMassive : IMemory
     {
         private const int PAGE_AMOUNT = 512;
         private readonly int ARRAY_LENGTH = 128;
-        private const int MAX_PAGES = 5;
         private const int BITMAP_WEIGHT = 64;
-        private readonly long _file_size;
+        private const int MAX_PAGES = 5;
         private readonly FileStream _file_stream;
         private readonly Page[] _pages;
 
@@ -95,17 +100,12 @@ namespace lab1vage
 
         public IntMassive(string file_path, long array_size)
         {
-            _file_size = 0;
             _pages = [];
-            int pages_count = (int)(array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
-            _pages = new Page[pages_count];
-            for (int i = 0; i < pages_count; i++)
-            {
-                _pages[i].Status = 1;
-                _pages[i].Last_Write = DateTime.Now;
-                _pages[i].Number = i + 1;
-                _pages[i].Bitmap = 
+            long pages_count = (array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
+            if (pages_count > MAX_PAGES){
+                throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * 128}");
             }
+            _pages = new Page[pages_count];
             if (!File.Exists(file_path))
             {
                 _file_stream = new FileStream(file_path, FileMode.Create, FileAccess.ReadWrite);
@@ -124,10 +124,12 @@ namespace lab1vage
             BinaryReader reader = new BinaryReader(_file_stream);
             StreamWriter writer = new StreamWriter(_file_stream);
             int page_number = (index + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
+            int need_index = 0;
             for (int i = 0; i < _pages.Length; i++)
             {
                 if (_pages[i].Number == page_number)
                 {
+                    need_index = i;
                     flag = true;
                     break;
                 }
@@ -140,6 +142,7 @@ namespace lab1vage
                     if (_pages[i].Number == 0)
                     {
                         flag = true;
+                        need_index = i;
                         break;
                     }
                 }
@@ -147,35 +150,39 @@ namespace lab1vage
                 {
                     Console.WriteLine("Cleaning the memory and take a new page...");
                     DateTime oldest_date = DateTime.MaxValue;
-                    int oldest_index = 0;
                     for (int i = 0; i < _pages.Length; i++)
                     {
                         if (_pages[i].Last_Write < oldest_date)
                         {
                             oldest_date = _pages[i].Last_Write;
-                            oldest_index = i;
+                            need_index = i;
                         }
                     }
-                    _file_stream.Seek(2, SeekOrigin.Begin);
-                    _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[oldest_index].Number, SeekOrigin.Current);
-                    handler.PageWriter(_pages[oldest_index], writer);
+                    if (_pages[need_index].Status == 1)
+                    {
+                        _file_stream.Seek(2, SeekOrigin.Begin);
+                        _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[need_index].Number, SeekOrigin.Current);
+                        handler.PageWriter(_pages[need_index], writer);
+                    }
                 }
                 _file_stream.Seek(2, SeekOrigin.Begin);
                 _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[page_number].Number, SeekOrigin.Current);
-                _pages[page_number] = handler.PageReader(reader);
+                _pages[need_index] = handler.PageReader(reader);
             }
-            return page_number;
+            return need_index;
         }
 
         public int Element_Definition(int index, int variable)
         {
-            if (Page_Number(index) != null)
-            {
-                int page_number = (int)Page_Number(index);
-                _ = index % ARRAY_LENGTH;
-                variable = _pages[page_number].Values[index];
-                return variable;
-            }
+            int page_number = Page_Number(index);
+
+            // if (Page_Number(index) != null)
+            // {
+            //     page_number = (int)Page_Number(index);
+            //     _ = index % ARRAY_LENGTH;
+            //     variable = _pages[page_number].Values[index];
+            //     return variable;
+            // }
             return 0;
         }
 
