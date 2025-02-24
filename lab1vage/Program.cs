@@ -52,14 +52,15 @@
                             }
                             break;
                         case "input":
-                            try
-                            {
-                                memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
+                            memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                            // try
+                            // {
+                            //     memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                            // }
+                            // catch (Exception ex)
+                            // {
+                            //     Console.WriteLine(ex.Message);
+                            // }
                             break;
                         case "print":
                             try
