@@ -48,36 +48,6 @@ namespace lab1vage
         }
     }
 
-    public interface IFile
-    {
-        Page PageReader(BinaryReader reader);
-        void PageWriter(Page page, StreamWriter writer);
-    }
-    public class FileHandler : IFile
-    {
-        private readonly int ARRAY_LENGTH = 128;
-        private const int BITMAP_WEIGHT = 64;
-        public Page PageReader(BinaryReader reader)
-        {
-            Page page = new Page();
-            page.Number = reader.ReadInt32();
-            page.Status = reader.ReadByte();
-            page.Last_Write = new DateTime(reader.ReadInt64());
-            page.Bitmap = reader.ReadBytes(BITMAP_WEIGHT);
-            for (int j = 0; j < ARRAY_LENGTH; j++)
-            {
-                page.Values[j] = reader.ReadInt32();
-            }
-            return page;
-        }
-
-        public void PageWriter(Page page, StreamWriter writer)
-        {
-            writer.WriteLine(page.Bitmap);
-            writer.WriteLine(page.Values);
-        }
-    }
-
     public interface IMemory
     {
         int Page_Number(int index);
@@ -87,13 +57,9 @@ namespace lab1vage
 
     public class IntMassive : IMemory
     {
-        private const int PAGE_AMOUNT = 512;
         private readonly int ARRAY_LENGTH = 128;
-        private const int BITMAP_WEIGHT = 64;
         private const int MAX_PAGES = 5;
-        private readonly FileStream _file_stream;
         private readonly Page[] _pages;
-
         private readonly IFile handler;
 
         public IntMassive(string file_path, long array_size)
@@ -102,26 +68,15 @@ namespace lab1vage
             long pages_count = (array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
             if (pages_count > MAX_PAGES)
             {
-                throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * 128}");
+                throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * ARRAY_LENGTH}");
             }
             _pages = new Page[pages_count];
-            if (!File.Exists(file_path))
-            {
-                _file_stream = new FileStream(file_path, FileMode.Create, FileAccess.ReadWrite);
-                _file_stream.Write(new byte[] { 0x56, 0x4D }, 0, 2);
-            }
-            else
-            {
-                _file_stream = new FileStream(file_path, FileMode.Open, FileAccess.ReadWrite);
-            }
-            handler = new FileHandler();
+            handler = new FileHandler(file_path);
         }
 
         public int Page_Number(int index)
         {
             bool flag = false;
-            BinaryReader reader = new BinaryReader(_file_stream);
-            StreamWriter writer = new StreamWriter(_file_stream);
             int page_number = (index + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
             int need_index = 0;
             for (int i = 0; i < _pages.Length; i++)
@@ -141,7 +96,6 @@ namespace lab1vage
                     if (_pages[i].Number == 0)
                     {
                         flag = true;
-                        Console.WriteLine("FFFFFFFF");
                         need_index = i;
                         break;
                     }
@@ -160,14 +114,10 @@ namespace lab1vage
                     }
                     if (_pages[need_index].Status == 1)
                     {
-                        _file_stream.Seek(2, SeekOrigin.Begin);
-                        _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[need_index].Number, SeekOrigin.Current);
-                        handler.PageWriter(_pages[need_index], writer);
+                        handler.PageWriter(_pages[need_index]);
                     }
                 }
-                _file_stream.Seek(2, SeekOrigin.Begin);
-                _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[page_number].Number, SeekOrigin.Current);
-                _pages[need_index] = handler.PageReader(reader);
+                _pages[need_index] = handler.PageReader(page_number);
             }
             return need_index;
         }
@@ -209,10 +159,7 @@ namespace lab1vage
             {
                 if (_pages[i].Status == 1)
                 {
-                    StreamWriter writer = new StreamWriter(_file_stream);
-                    _file_stream.Seek(2, SeekOrigin.Begin);
-                    _file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * _pages[i].Number - 1, SeekOrigin.Current);
-                    handler.PageWriter(_pages[i], writer);
+                    handler.PageWriter(_pages[i]);
                 }
             }
         }
