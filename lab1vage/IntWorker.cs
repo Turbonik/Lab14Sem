@@ -23,13 +23,15 @@ namespace lab1vage
 
         public IntMassive(string file_path, long array_size)
         {
-            _pages = [];
             long pages_count = (array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
             if (pages_count > MAX_PAGES)
             {
                 throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * ARRAY_LENGTH}");
             }
             _pages = new IntPage[pages_count];
+            for (int i = 0; i < pages_count; i++){
+                _pages[i] = new IntPage();
+            }
             handler = new IntFileHandler(file_path, ARRAY_LENGTH);
         }
 

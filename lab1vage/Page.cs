@@ -99,7 +99,7 @@ namespace lab1vage
             _number = 0;
             _status = 0;
             _last_write = DateTime.Now;
-            _bitmap = new byte[64];    
+            _bitmap = new byte[64];
             _values = new char[512];
         }
     }

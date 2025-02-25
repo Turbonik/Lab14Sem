@@ -10,7 +10,7 @@ namespace lab1vage
     {
         int Page_Number(int index);
         int Element_Definition(int index);
-        bool Element_Write(int index, int variable);
+        bool Element_Write(int index, char variable);
         void Exit_Command();
     }
     public class CharMassive : ICharMemory
