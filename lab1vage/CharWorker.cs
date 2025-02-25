@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 
 namespace lab1vage
 {
-    public class CharMassive : IMemory
+    public interface ICharMemory
+    {
+        int Page_Number(int index);
+        int Element_Definition(int index);
+        bool Element_Write(int index, int variable);
+        void Exit_Command();
+    }
+    public class CharMassive : ICharMemory
     {
         private readonly int ARRAY_LENGTH = 512;
         private const int MAX_PAGES = 5;
-        private readonly Page[] _pages;
-        private readonly IFile handler;
+        private readonly ICharPage[] _pages;
+        private readonly ICharFile handler;
 
         public CharMassive(string file_path, long array_size)
         {
@@ -21,8 +28,8 @@ namespace lab1vage
             {
                 throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * ARRAY_LENGTH}");
             }
-            _pages = new Page[pages_count];
-            handler = new FileHandler(file_path);
+            _pages = new CharPage[pages_count];
+            handler = new CharFileHandler(file_path, ARRAY_LENGTH);
         }
 
         public int Page_Number(int index)
@@ -87,7 +94,7 @@ namespace lab1vage
             }
         }
 
-        public bool Element_Write(int index, int value)
+        public bool Element_Write(int index, char value)
         {
             int page_number = Page_Number(index);
             index = index % ARRAY_LENGTH;

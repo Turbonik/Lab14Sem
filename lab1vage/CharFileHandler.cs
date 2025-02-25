@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace lab1vage
 {
-    public interface IIntFile
+    public interface ICharFile
     {
-        IIntPage PageReader(int page_number);
-        void PageWriter(IIntPage page);
+        ICharPage PageReader(int page_number);
+        void PageWriter(ICharPage page);
     }
-    public class IntFileHandler : IIntFile
+    public class CharFileHandler : ICharFile
     {
         private readonly int _array_length;
         private readonly int _bitmap_weight;
@@ -19,7 +19,7 @@ namespace lab1vage
         private readonly string _file_path;
         private long _pages_count;
 
-        public IntFileHandler(string file_path, int array_length)
+        public CharFileHandler(string file_path, int array_length)
         {
             if (!File.Exists(file_path))
             {
@@ -38,9 +38,9 @@ namespace lab1vage
             _bitmap_weight = array_length / 8;
             _array_length = array_length;
         }
-        public IIntPage PageReader(int page_number)
+        public ICharPage PageReader(int page_number)
         {
-            IIntPage page = new IntPage();
+            ICharPage page = new CharPage();
             page.Number = page_number;
             page.Status = 0;
             page.Last_Write = DateTime.Now;
@@ -49,7 +49,7 @@ namespace lab1vage
                 long need_to_create_pages = page_number - _pages_count;
                 while (need_to_create_pages > 0)
                 {
-                    IIntPage page_to_write = new IntPage();
+                    ICharPage page_to_write = new CharPage();
                     page_to_write.Number = _pages_count + 1;
                     PageWriter(page_to_write);
                     _pages_count++;
@@ -62,16 +62,16 @@ namespace lab1vage
                 using (BinaryReader reader = new BinaryReader(file_stream))
                 {
                     page.Bitmap = reader.ReadBytes(_bitmap_weight);
-                    for (int j = 0; j < _bitmap_weight; j++)
-                    {
-                        page.Values[j] = reader.ReadInt32();
-                    }
+                }
+                using (StreamReader reader = new StreamReader(file_stream))
+                {
+                    reader.ReadBlock(page.Values, 0, _array_length);
                 }
             }
             return page;
         }
 
-        public void PageWriter(IIntPage page)
+        public void PageWriter(ICharPage page)
         {
             using (FileStream file_stream = new FileStream(_file_path, FileMode.Open, FileAccess.ReadWrite))
             {
@@ -79,10 +79,11 @@ namespace lab1vage
                 using (BinaryWriter writer = new BinaryWriter(file_stream))
                 {
                     writer.Write(page.Bitmap);
-                    for (int j = 0; j < _array_length; j++)
-                    {
-                        writer.Write(page.Values[j]);
-                    }
+                    writer.Flush();
+                }
+                using (StreamWriter writer = new StreamWriter(file_stream))
+                {
+                    writer.Write(page.Values);
                     writer.Flush();
                 }
             }

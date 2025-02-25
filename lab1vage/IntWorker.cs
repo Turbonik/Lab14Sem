@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lab1vage
 {
-    public interface IMemory
+    public interface IIntMemory
     {
         int Page_Number(int index);
         int Element_Definition(int index);
@@ -14,12 +14,12 @@ namespace lab1vage
         void Exit_Command();
     }
 
-    public class IntMassive : IMemory
+    public class IntMassive : IIntMemory
     {
         private const int ARRAY_LENGTH = 128;
         private const int MAX_PAGES = 5;
-        private readonly Page[] _pages;
-        private readonly IFile handler;
+        private readonly IIntPage[] _pages;
+        private readonly IIntFile handler;
 
         public IntMassive(string file_path, long array_size)
         {
@@ -29,8 +29,8 @@ namespace lab1vage
             {
                 throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * ARRAY_LENGTH}");
             }
-            _pages = new Page[pages_count];
-            handler = new FileHandler(file_path, ARRAY_LENGTH);
+            _pages = new IntPage[pages_count];
+            handler = new IntFileHandler(file_path, ARRAY_LENGTH);
         }
 
         public int Page_Number(int index)

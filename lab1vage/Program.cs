@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {
-            IMemory memory;
+            IIntMemory int_memory;
+            ICharMemory char_memory;
             Console.WriteLine("VM>");
             while (true)
             {
@@ -15,7 +16,7 @@
                     string[] words = choice.Split(' ');
                     try
                     {
-                        memory = new IntMassive(words[0], long.Parse(words[1]));
+                        int_memory = new IntMassive(words[0], long.Parse(words[1]));
                         break;
                     }
                     catch (Exception ex)
@@ -37,7 +38,7 @@
                     string[] words = choice.Split(' ');
                     if (words[0].ToLower() == "exit")
                     {
-                        memory.Exit_Command();
+                        int_memory.Exit_Command();
                         break;
                     }
                     switch (words[0].ToLower())
@@ -45,7 +46,7 @@
                         case "create":
                             try
                             {
-                                memory = new IntMassive(words[1], long.Parse(words[2]));
+                                int_memory = new IntMassive(words[1], long.Parse(words[2]));
                             }
                             catch (Exception ex)
                             {
@@ -56,7 +57,7 @@
                             //memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
                             try
                             {
-                                memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                                int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
                             }
                             catch (Exception ex)
                             {
@@ -67,7 +68,7 @@
                             //Console.WriteLine(memory.Element_Definition(int.Parse(words[1])));
                             try
                             {
-                                Console.WriteLine(memory.Element_Definition(int.Parse(words[1])));
+                                Console.WriteLine(int_memory.Element_Definition(int.Parse(words[1])));
                             }
                             catch (Exception ex)
                             {
