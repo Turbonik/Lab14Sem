@@ -37,6 +37,7 @@
                     string[] words = choice.Split(' ');
                     if (words[0].ToLower() == "exit")
                     {
+                        memory.Exit_Command();
                         break;
                     }
                     switch (words[0].ToLower())
@@ -52,17 +53,18 @@
                             }
                             break;
                         case "input":
-                            memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
-                            // try
-                            // {
-                            //     memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            //memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                            try
+                            {
+                                memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "print":
+                            //Console.WriteLine(memory.Element_Definition(int.Parse(words[1])));
                             try
                             {
                                 Console.WriteLine(memory.Element_Definition(int.Parse(words[1])));

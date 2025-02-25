@@ -2,8 +2,8 @@ namespace lab1vage
 {
     public struct Page
     {
-        private int _number;
-        public int Number
+        private long _number;
+        public long Number
         {
             get { return _number; }
             set { _number = value; }
@@ -37,8 +37,8 @@ namespace lab1vage
         {
             _status = 0;
             _last_write = DateTime.Now;
-            _bitmap = [16];
-            _values = [128];
+            _bitmap = new byte[16];
+            _values = new int[128];
         }
     }
 }
