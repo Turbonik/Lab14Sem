@@ -10,9 +10,14 @@ namespace lab1vage
     {
         private IIntMemory _int_memory;
         private ICharMemory _char_memory;
+        private string _file_path;
 
         public void Int_Control()
         {
+            if (!Directory.Exists("Directory/IntDirectory"))
+            {
+                Directory.CreateDirectory("Directory/IntDirectory");
+            }
             while (true)
             {
                 Console.WriteLine("Введите действие, которое необходимо совершить:");
@@ -35,7 +40,8 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            _int_memory = new IntMassive(words[1], long.Parse(words[2]));
+                            _file_path = Path.Combine("Directory/IntDirectory", words[1]);
+                            _int_memory = new IntMassive(_file_path, long.Parse(words[2]));
                             // try
                             // {
                             //     _int_memory = new IntMassive(words[1], long.Parse(words[2]));
@@ -96,36 +102,42 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            try
-                            {
-                                _char_memory = new CharMassive(words[1], long.Parse(words[2]));
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
+                            _file_path = Path.Combine("Directory/CharDirectory", words[1]);
+                            _char_memory = new CharMassive(_file_path, long.Parse(words[2]));
+                            // try
+                            // {
+                            //     _char_memory = new CharMassive(_file_path, long.Parse(words[2]));
+                            // }
+                            // catch (Exception ex)
+                            // {
+                            //     Console.WriteLine(ex.Message);
+                            // }
                             break;
                         case "input":
-                            //memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
-                            try
+                            if (_char_memory == null)
                             {
-                                _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
+                                Console.WriteLine("NULL HERE!!!!!");
                             }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
+                            _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
+                            // try
+                            // {
+                            //     _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
+                            // }
+                            // catch (Exception ex)
+                            // {
+                            //     Console.WriteLine(ex.Message);
+                            // }
                             break;
                         case "print":
-                            //Console.WriteLine(memory.Element_Definition(int.Parse(words[1])));
-                            try
-                            {
-                                Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine(ex.Message);
-                            }
+                            Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
+                            // try
+                            // {
+                            //     Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
+                            // }
+                            // catch (Exception ex)
+                            // {
+                            //     Console.WriteLine(ex.Message);
+                            // }
                             break;
                     }
                 }

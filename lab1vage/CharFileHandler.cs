@@ -62,11 +62,16 @@ namespace lab1vage
                 using (BinaryReader reader = new BinaryReader(file_stream))
                 {
                     page.Bitmap = reader.ReadBytes(_bitmap_weight);
+                    for (int i = 0; i < _array_length; i++)
+                    {
+                        page.Values[i] = reader.ReadChar();
+                    }
+                    //page.Values = reader.ReadChars(_array_length);
                 }
-                using (StreamReader reader = new StreamReader(file_stream))
-                {
-                    reader.ReadBlock(page.Values, 0, _array_length);
-                }
+                // using (StreamReader reader = new StreamReader(file_stream))
+                // {
+                //     reader.ReadBlock(page.Values, 0, _array_length);
+                // }
             }
             return page;
         }
@@ -79,13 +84,18 @@ namespace lab1vage
                 using (BinaryWriter writer = new BinaryWriter(file_stream))
                 {
                     writer.Write(page.Bitmap);
+                    foreach (char c in page.Values)
+                    {
+                        writer.Write(c); // Записываем каждый символ
+                    }
+                    //writer.Write(page.Values);
                     writer.Flush();
                 }
-                using (StreamWriter writer = new StreamWriter(file_stream))
-                {
-                    writer.Write(page.Values);
-                    writer.Flush();
-                }
+                // using (StreamWriter writer = new StreamWriter(file_stream))
+                // {
+                //     writer.Write(page.Values[5]);
+                //     writer.Flush();
+                // }
             }
         }
     }

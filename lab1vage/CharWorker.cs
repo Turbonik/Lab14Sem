@@ -9,7 +9,7 @@ namespace lab1vage
     public interface ICharMemory
     {
         int Page_Number(int index);
-        int Element_Definition(int index);
+        char Element_Definition(int index);
         bool Element_Write(int index, char variable);
         void Exit_Command();
     }
@@ -29,6 +29,10 @@ namespace lab1vage
                 throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * ARRAY_LENGTH}");
             }
             _pages = new CharPage[pages_count];
+            for (int i = 0; i < pages_count; i++)
+            {
+                _pages[i] = new CharPage();
+            }
             handler = new CharFileHandler(file_path, ARRAY_LENGTH);
         }
 
@@ -80,7 +84,7 @@ namespace lab1vage
             return need_index;
         }
 
-        public int Element_Definition(int index)
+        public char Element_Definition(int index)
         {
             int page_number = Page_Number(index);
             index = index % ARRAY_LENGTH;
@@ -90,7 +94,8 @@ namespace lab1vage
             }
             else
             {
-                return _pages[page_number].Values[index % ARRAY_LENGTH];
+                Console.WriteLine(_pages[page_number].Values[index]);
+                return _pages[page_number].Values[index];
             }
         }
 
@@ -101,6 +106,7 @@ namespace lab1vage
             if ((_pages[page_number].Bitmap[index / 8] & (1 << index % 8)) == 0)
             {
                 _pages[page_number].Bitmap[index / 8] |= (byte)(1 << index % 8);
+                Console.WriteLine($"index: {index}, count: {_pages[page_number].Values.Length}");
                 _pages[page_number].Values[index] = value;
                 _pages[page_number].Status = 1;
                 _pages[page_number].Last_Write = DateTime.Now;
