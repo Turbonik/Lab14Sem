@@ -94,7 +94,6 @@ namespace lab1vage
             }
             else
             {
-                Console.WriteLine(_pages[page_number].Values[index]);
                 return _pages[page_number].Values[index];
             }
         }
@@ -106,7 +105,6 @@ namespace lab1vage
             if ((_pages[page_number].Bitmap[index / 8] & (1 << index % 8)) == 0)
             {
                 _pages[page_number].Bitmap[index / 8] |= (byte)(1 << index % 8);
-                Console.WriteLine($"index: {index}, count: {_pages[page_number].Values.Length}");
                 _pages[page_number].Values[index] = value;
                 _pages[page_number].Status = 1;
                 _pages[page_number].Last_Write = DateTime.Now;

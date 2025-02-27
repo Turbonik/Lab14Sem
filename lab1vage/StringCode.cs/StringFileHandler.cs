@@ -1,25 +1,19 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace lab1vage
 {
-    public interface ICharFile
+    public interface IStringFile
     {
-        ICharPage PageReader(int page_number);
-        void PageWriter(ICharPage page);
+        IStringPage PageReader(int page_number);
+        void PageWriter(IStringPage page);
     }
-    public class CharFileHandler : ICharFile
+    public class StringFileHandler : IStringFile
     {
-        private readonly int _array_length;
-        private readonly int _bitmap_weight;
+        private readonly int ARRAY_LENGTH = 128;
+        private readonly int BITMAP_WEIGHT = 16;
         private const int PAGE_AMOUNT = 512;
         private readonly string _file_path;
         private long _pages_count;
 
-        public CharFileHandler(string file_path, int array_length)
+        public StringFileHandler(string file_path, int array_length)
         {
             if (!File.Exists(file_path))
             {
@@ -35,12 +29,10 @@ namespace lab1vage
                 _pages_count = (file_info.Length - 2) / (PAGE_AMOUNT + array_length / 8);
             }
             _file_path = file_path;
-            _bitmap_weight = array_length / 8;
-            _array_length = array_length;
         }
-        public ICharPage PageReader(int page_number)
+        public IStringPage PageReader(int page_number)
         {
-            ICharPage page = new CharPage();
+            IStringPage page = new StringPage();
             page.Number = page_number;
             page.Status = 0;
             page.Last_Write = DateTime.Now;
@@ -49,7 +41,7 @@ namespace lab1vage
                 long need_to_create_pages = page_number - _pages_count;
                 while (need_to_create_pages > 0)
                 {
-                    ICharPage page_to_write = new CharPage();
+                    IStringPage page_to_write = new StringPage();
                     page_to_write.Number = _pages_count + 1;
                     PageWriter(page_to_write);
                     _pages_count++;
@@ -58,44 +50,33 @@ namespace lab1vage
             }
             using (FileStream file_stream = new FileStream(_file_path, FileMode.Open, FileAccess.ReadWrite))
             {
-                file_stream.Seek((PAGE_AMOUNT + _bitmap_weight) * (page_number - 1) + 2, SeekOrigin.Begin);
+                file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * (page_number - 1) + 2, SeekOrigin.Begin);
                 using (BinaryReader reader = new BinaryReader(file_stream))
                 {
-                    page.Bitmap = reader.ReadBytes(_bitmap_weight);
-                    for (int i = 0; i < _array_length; i++)
+                    page.Bitmap = reader.ReadBytes(BITMAP_WEIGHT);
+                    for (int j = 0; j < BITMAP_WEIGHT; j++)
                     {
-                        page.Values[i] = reader.ReadChar();
+                        //page.Values[j] = reader.ReadInt32();
                     }
-                    //page.Values = reader.ReadChars(_array_length);
                 }
-                // using (StreamReader reader = new StreamReader(file_stream))
-                // {
-                //     reader.ReadBlock(page.Values, 0, _array_length);
-                // }
             }
             return page;
         }
 
-        public void PageWriter(ICharPage page)
+        public void PageWriter(IStringPage page)
         {
             using (FileStream file_stream = new FileStream(_file_path, FileMode.Open, FileAccess.ReadWrite))
             {
-                file_stream.Seek((PAGE_AMOUNT + _bitmap_weight) * (page.Number - 1) + 2, SeekOrigin.Begin);
+                file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * (page.Number - 1) + 2, SeekOrigin.Begin);
                 using (BinaryWriter writer = new BinaryWriter(file_stream))
                 {
                     writer.Write(page.Bitmap);
-                    foreach (char c in page.Values)
+                    for (int j = 0; j < ARRAY_LENGTH; j++)
                     {
-                        writer.Write(c); // Записываем каждый символ
+                        writer.Write(page.Values[j]);
                     }
-                    //writer.Write(page.Values);
                     writer.Flush();
                 }
-                // using (StreamWriter writer = new StreamWriter(file_stream))
-                // {
-                //     writer.Write(page.Values[5]);
-                //     writer.Flush();
-                // }
             }
         }
     }

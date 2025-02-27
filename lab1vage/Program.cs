@@ -9,7 +9,7 @@
 
         static void Menu()
         {
-            Controller controller = new Controller();
+            IControl controller = new Controller();
             if (!Directory.Exists("Directory"))
             {
                 Directory.CreateDirectory("Directory");
@@ -17,7 +17,7 @@
             Console.WriteLine("VM>");
             while (true)
             {
-                Console.WriteLine("Выберите тип массива, с которым хотите работать: int, char. Для выхода: exit");
+                Console.WriteLine("Выберите тип массива, с которым хотите работать: int, char, string. Для выхода: exit");
                 string choice = Console.ReadLine();
                 if (choice == "exit")
                 {
@@ -26,7 +26,6 @@
                 switch (choice)
                 {
                     case "int":
-
                         controller.Int_Control();
                         break;
                     case "char":
