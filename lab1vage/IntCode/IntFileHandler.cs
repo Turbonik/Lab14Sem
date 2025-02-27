@@ -13,8 +13,8 @@ namespace lab1vage
     }
     public class IntFileHandler : IIntFile
     {
-        private readonly int _array_length;
-        private readonly int _bitmap_weight;
+        private readonly int ARRAY_LENGTH = 128;
+        private readonly int BITMAP_WEIGHT = 16;
         private const int PAGE_AMOUNT = 512;
         private readonly string _file_path;
         private long _pages_count;
@@ -35,8 +35,6 @@ namespace lab1vage
                 _pages_count = (file_info.Length - 2) / (PAGE_AMOUNT + array_length / 8);
             }
             _file_path = file_path;
-            _bitmap_weight = array_length / 8;
-            _array_length = array_length;
         }
         public IIntPage PageReader(int page_number)
         {
@@ -58,11 +56,11 @@ namespace lab1vage
             }
             using (FileStream file_stream = new FileStream(_file_path, FileMode.Open, FileAccess.ReadWrite))
             {
-                file_stream.Seek((PAGE_AMOUNT + _bitmap_weight) * (page_number - 1) + 2, SeekOrigin.Begin);
+                file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * (page_number - 1) + 2, SeekOrigin.Begin);
                 using (BinaryReader reader = new BinaryReader(file_stream))
                 {
-                    page.Bitmap = reader.ReadBytes(_bitmap_weight);
-                    for (int j = 0; j < _bitmap_weight; j++)
+                    page.Bitmap = reader.ReadBytes(BITMAP_WEIGHT);
+                    for (int j = 0; j < ARRAY_LENGTH; j++)
                     {
                         page.Values[j] = reader.ReadInt32();
                     }
@@ -75,11 +73,11 @@ namespace lab1vage
         {
             using (FileStream file_stream = new FileStream(_file_path, FileMode.Open, FileAccess.ReadWrite))
             {
-                file_stream.Seek((PAGE_AMOUNT + _bitmap_weight) * (page.Number - 1) + 2, SeekOrigin.Begin);
+                file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * (page.Number - 1) + 2, SeekOrigin.Begin);
                 using (BinaryWriter writer = new BinaryWriter(file_stream))
                 {
                     writer.Write(page.Bitmap);
-                    for (int j = 0; j < _array_length; j++)
+                    for (int j = 0; j < ARRAY_LENGTH; j++)
                     {
                         writer.Write(page.Values[j]);
                     }

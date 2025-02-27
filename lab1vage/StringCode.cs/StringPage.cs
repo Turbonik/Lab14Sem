@@ -7,7 +7,7 @@ namespace lab1vage
         byte Status { get; set; }
         public DateTime Last_Write { get; set; }
         byte[] Bitmap { get; set; }
-        string[] Values { get; set; }
+        int[] Links { get; set; }
     }
 
     public class StringPage : IStringPage
@@ -36,11 +36,11 @@ namespace lab1vage
             get { return _bitmap; }
             set { _bitmap = value; }
         }
-        private string[] _values;
-        public string[] Values
-        {
-            get { return _values; }
-            set { _values = value; }
+
+        private int[] _links;
+        public int[] Links{
+            get { return _links; }
+            set { _links = value; }
         }
 
         public StringPage()
@@ -49,7 +49,7 @@ namespace lab1vage
             _status = 0;
             _last_write = DateTime.Now;
             _bitmap = new byte[16];
-            _values = new string[128];
+            _links = new int[128];
         }
     }
 }

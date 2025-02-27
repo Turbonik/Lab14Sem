@@ -13,13 +13,13 @@ namespace lab1vage
     }
     public class CharFileHandler : ICharFile
     {
-        private readonly int _array_length;
-        private readonly int _bitmap_weight;
+        private readonly int ARRAY_LENGTH = 512;
+        private readonly int BITMAP_WEIGHT = 64;
         private const int PAGE_AMOUNT = 512;
         private readonly string _file_path;
         private long _pages_count;
 
-        public CharFileHandler(string file_path, int array_length)
+        public CharFileHandler(string file_path)
         {
             if (!File.Exists(file_path))
             {
@@ -32,11 +32,9 @@ namespace lab1vage
             else
             {
                 FileInfo file_info = new FileInfo(file_path);
-                _pages_count = (file_info.Length - 2) / (PAGE_AMOUNT + array_length / 8);
+                _pages_count = (file_info.Length - 2) / (PAGE_AMOUNT + BITMAP_WEIGHT);
             }
             _file_path = file_path;
-            _bitmap_weight = array_length / 8;
-            _array_length = array_length;
         }
         public ICharPage PageReader(int page_number)
         {
@@ -58,11 +56,11 @@ namespace lab1vage
             }
             using (FileStream file_stream = new FileStream(_file_path, FileMode.Open, FileAccess.ReadWrite))
             {
-                file_stream.Seek((PAGE_AMOUNT + _bitmap_weight) * (page_number - 1) + 2, SeekOrigin.Begin);
+                file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * (page_number - 1) + 2, SeekOrigin.Begin);
                 using (BinaryReader reader = new BinaryReader(file_stream))
                 {
-                    page.Bitmap = reader.ReadBytes(_bitmap_weight);
-                    for (int i = 0; i < _array_length; i++)
+                    page.Bitmap = reader.ReadBytes(BITMAP_WEIGHT);
+                    for (int i = 0; i < ARRAY_LENGTH; i++)
                     {
                         page.Values[i] = reader.ReadChar();
                     }
@@ -75,7 +73,7 @@ namespace lab1vage
         {
             using (FileStream file_stream = new FileStream(_file_path, FileMode.Open, FileAccess.ReadWrite))
             {
-                file_stream.Seek((PAGE_AMOUNT + _bitmap_weight) * (page.Number - 1) + 2, SeekOrigin.Begin);
+                file_stream.Seek((PAGE_AMOUNT + BITMAP_WEIGHT) * (page.Number - 1) + 2, SeekOrigin.Begin);
                 using (BinaryWriter writer = new BinaryWriter(file_stream))
                 {
                     writer.Write(page.Bitmap);

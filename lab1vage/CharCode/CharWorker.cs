@@ -33,7 +33,7 @@ namespace lab1vage
             {
                 _pages[i] = new CharPage();
             }
-            handler = new CharFileHandler(file_path, ARRAY_LENGTH);
+            handler = new CharFileHandler(file_path);
         }
 
         public int Page_Number(int index)

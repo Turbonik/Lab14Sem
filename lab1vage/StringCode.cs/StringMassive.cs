@@ -13,7 +13,7 @@ namespace lab1vage{
         private readonly IStringPage[] _pages;
         private readonly IStringFile handler;
 
-        public StringMassive(string file_path, long array_size)
+        public StringMassive(string file_path_values, string file_path_links, long array_size)
         {
             long pages_count = (array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
             if (pages_count > MAX_PAGES)
@@ -25,7 +25,7 @@ namespace lab1vage{
             {
                 _pages[i] = new StringPage();
             }
-            handler = new StringFileHandler(file_path, ARRAY_LENGTH);
+            handler = new StringFileHandler(file_path_values, file_path_links, ARRAY_LENGTH);
         }
 
         public int Page_Number(int index)
@@ -86,12 +86,16 @@ namespace lab1vage{
             }
             else
             {
+                using (StreamReader reader = new StreamReader)
                 return _pages[page_number].Values[index];
             }
         }
 
         public bool Element_Write(int index, string value)
         {
+            if (value.Length > 10){
+                throw new Exception("Длина строки больше 10.");
+            }
             int page_number = Page_Number(index);
             index = index % ARRAY_LENGTH;
             if ((_pages[page_number].Bitmap[index / 8] & (1 << index % 8)) == 0)
