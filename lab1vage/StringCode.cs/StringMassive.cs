@@ -86,8 +86,7 @@ namespace lab1vage{
             }
             else
             {
-                using (StreamReader reader = new StreamReader)
-                return _pages[page_number].Values[index];
+                return handler.String_Selection(_pages[page_number].Links[index]);
             }
         }
 
@@ -101,7 +100,7 @@ namespace lab1vage{
             if ((_pages[page_number].Bitmap[index / 8] & (1 << index % 8)) == 0)
             {
                 _pages[page_number].Bitmap[index / 8] |= (byte)(1 << index % 8);
-                _pages[page_number].Values[index] = value;
+                _pages[page_number].Links[index] = handler.String_Writer(value);
                 _pages[page_number].Status = 1;
                 _pages[page_number].Last_Write = DateTime.Now;
             }

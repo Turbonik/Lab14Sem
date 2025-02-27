@@ -4,6 +4,8 @@ namespace lab1vage
     {
         IStringPage PageReader(int page_number);
         void PageWriter(IStringPage page);
+        string String_Selection(long link);
+        long String_Writer(string str);
     }
     public class StringFileHandler : IStringFile
     {
@@ -28,12 +30,12 @@ namespace lab1vage
             if (!File.Exists(file_path_values)){
                 using (FileStream file_stream = new FileStream(file_path_values, FileMode.Create, FileAccess.ReadWrite)){};
             }
-            _file_path_values = file_path_values;
             else
             {
                 FileInfo file_info = new FileInfo(file_path_links);
                 _pages_count = (file_info.Length - 2) / (PAGE_AMOUNT + array_length / 8);
             }
+            _file_path_values = file_path_values;
         }
         public IStringPage PageReader(int page_number)
         {
@@ -83,6 +85,40 @@ namespace lab1vage
                     writer.Flush();
                 }
             }
+        }
+
+        public string String_Selection(long link)
+        {
+            FileInfo info = new FileInfo(_file_path_values);
+            using (FileStream file_stream = new FileStream(_file_path_values, FileMode.Open, FileAccess.ReadWrite)){
+                file_stream.Seek(link - 1, SeekOrigin.Begin);
+                using (BinaryReader reader = new BinaryReader(file_stream)){
+                    int length = reader.ReadInt32();
+                    char[] buffer = new char[length];
+                    for (int i = 0; i < length; i++){
+                        buffer[i] = reader.ReadChar();
+                    }
+                    return new string(buffer);
+                }
+            }
+        }
+
+        public long String_Writer(string str){
+            FileInfo info = new FileInfo(_file_path_values);
+            Console.WriteLine($"FILEINFO: {info.Length}");
+            using (FileStream file_stream = new FileStream(_file_path_values, FileMode.Open, FileAccess.Write))
+            {
+                using (BinaryWriter writer = new BinaryWriter(file_stream))
+                {
+                    writer.Write(str.Length);
+                    for (int i = 0; i < str.Length; i++)
+                    {
+                        writer.Write(str[i]);
+                    }
+                }
+            }
+            Console.WriteLine($"FILEINFO: {info.Length}");
+            return info.Length;
         }
     }
 }

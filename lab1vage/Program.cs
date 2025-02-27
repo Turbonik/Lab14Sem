@@ -31,6 +31,9 @@
                     case "char":
                         controller.Char_Control();
                         break;
+                    case "string":
+                        controller.String_Control();
+                        break;
                 }
             }
         }

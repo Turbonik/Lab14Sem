@@ -10,6 +10,7 @@ namespace lab1vage
     {
         void Int_Control();
         void Char_Control();
+        void String_Control();
     }
     public class Controller : IControl
     {
@@ -168,8 +169,8 @@ namespace lab1vage
             {
                 Directory.CreateDirectory("Directory/StringDirectory/Values");
             }
-            if (!Directory.Exists("Directrory/StringDirectory/Links")){
-                Directory.CreateDirectory("Directrory/StringDirectory/Links");
+            if (!Directory.Exists("Directory/StringDirectory/Links")){
+                Directory.CreateDirectory("Directory/StringDirectory/Links");
             }
             while (true)
             {
@@ -193,10 +194,10 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            string file_path_values = Path.Combine("Directory/StringDirectory/Links", words[1]);
-                            string file_path_links = Path.Combine("Directory/StringDirectory/Links", words[2]);
+                            string file_path_links = Path.Combine("Directory/StringDirectory/Links", words[1]);
+                            string file_path_values = Path.Combine("Directory/StringDirectory/Values", words[2]);
                             checked{
-                            _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
+                            _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[3]));
                             }
                             // try
                             // {
