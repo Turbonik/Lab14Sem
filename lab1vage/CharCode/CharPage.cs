@@ -1,4 +1,5 @@
-namespace lab1vage{
+namespace lab1vage
+{
     public interface ICharPage
     {
         long Number { get; set; }

@@ -27,8 +27,10 @@ namespace lab1vage
                 _pages_count = 0;
             }
             _file_path_links = file_path_links;
-            if (!File.Exists(file_path_values)){
-                using (FileStream file_stream = new FileStream(file_path_values, FileMode.Create, FileAccess.ReadWrite)){};
+            if (!File.Exists(file_path_values))
+            {
+                using (FileStream file_stream = new FileStream(file_path_values, FileMode.Create, FileAccess.ReadWrite)) { }
+                ;
             }
             else
             {
@@ -89,13 +91,15 @@ namespace lab1vage
 
         public string String_Selection(long link)
         {
-            FileInfo info = new FileInfo(_file_path_values);
-            using (FileStream file_stream = new FileStream(_file_path_values, FileMode.Open, FileAccess.ReadWrite)){
-                file_stream.Seek(link - 1, SeekOrigin.Begin);
-                using (BinaryReader reader = new BinaryReader(file_stream)){
+            using (FileStream file_stream = new FileStream(_file_path_values, FileMode.Open, FileAccess.ReadWrite))
+            {
+                file_stream.Seek(link, SeekOrigin.Begin);
+                using (BinaryReader reader = new BinaryReader(file_stream))
+                {
                     int length = reader.ReadInt32();
                     char[] buffer = new char[length];
-                    for (int i = 0; i < length; i++){
+                    for (int i = 0; i < length; i++)
+                    {
                         buffer[i] = reader.ReadChar();
                     }
                     return new string(buffer);
@@ -103,9 +107,9 @@ namespace lab1vage
             }
         }
 
-        public long String_Writer(string str){
+        public long String_Writer(string str)
+        {
             FileInfo info = new FileInfo(_file_path_values);
-            Console.WriteLine($"FILEINFO: {info.Length}");
             using (FileStream file_stream = new FileStream(_file_path_values, FileMode.Open, FileAccess.Write))
             {
                 using (BinaryWriter writer = new BinaryWriter(file_stream))
@@ -117,8 +121,7 @@ namespace lab1vage
                     }
                 }
             }
-            Console.WriteLine($"FILEINFO: {info.Length}");
-            return info.Length;
+            return info.Length - str.Length - sizeof(int);
         }
     }
 }

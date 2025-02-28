@@ -38,7 +38,8 @@ namespace lab1vage
         }
 
         private long[] _links;
-        public long[] Links{
+        public long[] Links
+        {
             get { return _links; }
             set { _links = value; }
         }

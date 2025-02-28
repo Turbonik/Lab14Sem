@@ -1,5 +1,7 @@
-namespace lab1vage{
-    public interface IStringMemory{
+namespace lab1vage
+{
+    public interface IStringMemory
+    {
         int Page_Number(int index);
         string Element_Definition(int index);
         bool Element_Write(int index, string variable);
@@ -19,6 +21,9 @@ namespace lab1vage{
             if (pages_count > MAX_PAGES)
             {
                 throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * ARRAY_LENGTH}");
+            }
+            if (array_size <= 0){
+                throw new ArgumentException("размер массива должен быть больше 0.");
             }
             _pages = new StringPage[pages_count];
             for (int i = 0; i < pages_count; i++)
@@ -92,7 +97,8 @@ namespace lab1vage{
 
         public bool Element_Write(int index, string value)
         {
-            if (value.Length > 10){
+            if (value.Length > 10)
+            {
                 throw new Exception("Длина строки больше 10.");
             }
             int page_number = Page_Number(index);

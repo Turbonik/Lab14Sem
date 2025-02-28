@@ -48,8 +48,9 @@ namespace lab1vage
                     {
                         case "create":
                             string file_path = Path.Combine("Directory/IntDirectory", words[1]);
-                            checked{
-                            _int_memory = new IntMassive(file_path, long.Parse(words[2]));
+                            checked
+                            {
+                                _int_memory = new IntMassive(file_path, long.Parse(words[2]));
                             }
                             // try
                             // {
@@ -61,8 +62,9 @@ namespace lab1vage
                             // }
                             break;
                         case "input":
-                            checked{
-                            _int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                            checked
+                            {
+                                _int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
                             }
                             // try
                             // {
@@ -74,8 +76,9 @@ namespace lab1vage
                             // }
                             break;
                         case "print":
-                            checked{
-                            Console.WriteLine(_int_memory.Element_Definition(int.Parse(words[1])));
+                            checked
+                            {
+                                Console.WriteLine(_int_memory.Element_Definition(int.Parse(words[1])));
                             }
                             // try
                             // {
@@ -120,8 +123,9 @@ namespace lab1vage
                     {
                         case "create":
                             string file_path = Path.Combine("Directory/CharDirectory", words[1]);
-                            checked{
-                            _char_memory = new CharMassive(file_path, long.Parse(words[2]));
+                            checked
+                            {
+                                _char_memory = new CharMassive(file_path, long.Parse(words[2]));
                             }
                             // try
                             // {
@@ -133,8 +137,9 @@ namespace lab1vage
                             // }
                             break;
                         case "input":
-                            checked{
-                            _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
+                            checked
+                            {
+                                _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
                             }
                             // try
                             // {
@@ -146,8 +151,9 @@ namespace lab1vage
                             // }
                             break;
                         case "print":
-                            checked{
-                            Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
+                            checked
+                            {
+                                Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
                             }
                             // try
                             // {
@@ -165,17 +171,14 @@ namespace lab1vage
 
         public void String_Control()
         {
-            if (!Directory.Exists("Directory/StringDirectory/Values"))
+            if (!Directory.Exists("Directory/StringDirectory"))
             {
-                Directory.CreateDirectory("Directory/StringDirectory/Values");
-            }
-            if (!Directory.Exists("Directory/StringDirectory/Links")){
-                Directory.CreateDirectory("Directory/StringDirectory/Links");
+                Directory.CreateDirectory("Directory/StringDirectory");
             }
             while (true)
             {
                 Console.WriteLine("Введите действие, которое необходимо совершить:");
-                Console.WriteLine("Create {имя_файла_ссылок} {имя_файла_значений} {размер_оперативной памяти} - создает файлы и выделяет в оперативной памяти указанный размер");
+                Console.WriteLine("Create {имя_директории} {размер_оперативной памяти} - создает файлы и выделяет в оперативной памяти указанный размер");
                 Console.WriteLine("Input {индекс} {значение} - записывает значение в индекс. Длина строки меньше 10 элементов");
                 Console.WriteLine("Print {индекс} - выводит на экран значение элемента массива элемента с индекс.");
                 Console.WriteLine("Exit - завершает работу прораммы.");
@@ -194,14 +197,23 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            string file_path_links = Path.Combine("Directory/StringDirectory/Links", words[1]);
-                            string file_path_values = Path.Combine("Directory/StringDirectory/Values", words[2]);
-                            checked{
-                            _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[3]));
+                            string directory_path = "Directory/StringDirectory/" + words[1];
+                            if (!Directory.Exists(directory_path))
+                            {
+                                Directory.CreateDirectory(directory_path);
+                            }
+                            string file_path_links = Path.Combine(directory_path, "links.txt");
+                            string file_path_values = Path.Combine(directory_path, "values.txt");
+                            checked
+                            {
+                                _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
                             }
                             // try
                             // {
-                            //     _string_memory = new StringMassive(_file_path, long.Parse(words[2]));
+                            //     checked
+                            //     {
+                            //         _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
+                            //     }
                             // }
                             // catch (Exception ex)
                             // {

@@ -6,34 +6,37 @@ using System.Threading.Tasks;
 
 namespace lab1vage
 {
-    public interface ICharMemory
+    public interface IIntMemory
     {
         int Page_Number(int index);
-        char Element_Definition(int index);
-        bool Element_Write(int index, char variable);
+        int Element_Definition(int index);
+        bool Element_Write(int index, int variable);
         void Exit_Command();
     }
-    public class CharMassive : ICharMemory
-    {
-        private readonly int ARRAY_LENGTH = 512;
-        private const int MAX_PAGES = 5;
-        private readonly ICharPage[] _pages;
-        private readonly ICharFile handler;
 
-        public CharMassive(string file_path, long array_size)
+    public class IntMassive : IIntMemory
+    {
+        private const int ARRAY_LENGTH = 128;
+        private const int MAX_PAGES = 5;
+        private readonly IIntPage[] _pages;
+        private readonly IIntFile handler;
+
+        public IntMassive(string file_path, long array_size)
         {
-            _pages = [];
             long pages_count = (array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
             if (pages_count > MAX_PAGES)
             {
                 throw new ArgumentException($"Количество элементов в массиве должно быть меньше чем {MAX_PAGES * ARRAY_LENGTH}");
             }
-            _pages = new CharPage[pages_count];
+            if (array_size <= 0){
+                throw new ArgumentException("размер массива должен быть больше 0.");
+            }
+            _pages = new IntPage[pages_count];
             for (int i = 0; i < pages_count; i++)
             {
-                _pages[i] = new CharPage();
+                _pages[i] = new IntPage();
             }
-            handler = new CharFileHandler(file_path);
+            handler = new IntFileHandler(file_path, ARRAY_LENGTH);
         }
 
         public int Page_Number(int index)
@@ -84,7 +87,7 @@ namespace lab1vage
             return need_index;
         }
 
-        public char Element_Definition(int index)
+        public int Element_Definition(int index)
         {
             int page_number = Page_Number(index);
             index = index % ARRAY_LENGTH;
@@ -98,7 +101,7 @@ namespace lab1vage
             }
         }
 
-        public bool Element_Write(int index, char value)
+        public bool Element_Write(int index, int value)
         {
             int page_number = Page_Number(index);
             index = index % ARRAY_LENGTH;
