@@ -8,6 +8,7 @@ namespace lab1vage
 
     public interface IControl
     {
+        void Menu();
         void Int_Control();
         void Char_Control();
         void String_Control();
@@ -19,6 +20,35 @@ namespace lab1vage
         private IStringMemory _string_memory;
         //private string _file_path;
 
+        public void Menu()
+        {
+            if (!Directory.Exists("Directory"))
+            {
+                Directory.CreateDirectory("Directory");
+            }
+            Console.WriteLine("VM>");
+            while (true)
+            {
+                Console.WriteLine("Выберите тип массива, с которым хотите работать: int, char, string. Для выхода: exit");
+                string choice = Console.ReadLine();
+                if (choice == "exit")
+                {
+                    break;
+                }
+                switch (choice)
+                {
+                    case "int":
+                        Int_Control();
+                        break;
+                    case "char":
+                        Char_Control();
+                        break;
+                    case "string":
+                        String_Control();
+                        break;
+                }
+            }
+        }
         public void Int_Control()
         {
             if (!Directory.Exists("Directory/IntDirectory"))
