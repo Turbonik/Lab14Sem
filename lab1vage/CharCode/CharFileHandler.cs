@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace lab1vage
 {
     public interface ICharFile
@@ -13,7 +7,7 @@ namespace lab1vage
     }
     public class CharFileHandler : ICharFile
     {
-        private readonly int ARRAY_LENGTH = 512;
+        private readonly int ARRAY_LENGTH = 512 / sizeof(char);
         private readonly int BITMAP_WEIGHT = 64;
         private const int PAGE_AMOUNT = 512;
         private readonly string _file_path;

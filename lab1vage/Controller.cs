@@ -1,10 +1,6 @@
 namespace lab1vage
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public interface IControl
     {
@@ -18,7 +14,6 @@ namespace lab1vage
         private IIntMemory _int_memory;
         private ICharMemory _char_memory;
         private IStringMemory _string_memory;
-        //private string _file_path;
 
         public void Menu()
         {
@@ -78,46 +73,43 @@ namespace lab1vage
                     {
                         case "create":
                             string file_path = Path.Combine("Directory/IntDirectory", words[1]);
-                            checked
+                            try
                             {
-                                _int_memory = new IntMassive(file_path, long.Parse(words[2]));
+                                checked
+                                {
+                                    _int_memory = new IntMassive(file_path, long.Parse(words[2]));
+                                }
                             }
-                            // try
-                            // {
-                            //     _int_memory = new IntMassive(words[1], long.Parse(words[2]));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "input":
-                            checked
+                            try
                             {
-                                _int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                                checked
+                                {
+                                    _int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
+                                }
                             }
-                            // try
-                            // {
-                            //     _int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "print":
-                            checked
+                            try
                             {
-                                Console.WriteLine(_int_memory.Element_Definition(int.Parse(words[1])));
+                                checked
+                                {
+                                    Console.WriteLine(_int_memory.Element_Definition(int.Parse(words[1])));
+                                }
                             }
-                            // try
-                            // {
-                            //     Console.WriteLine(_int_memory.Element_Definition(int.Parse(words[1])));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                     }
                 }
@@ -153,46 +145,43 @@ namespace lab1vage
                     {
                         case "create":
                             string file_path = Path.Combine("Directory/CharDirectory", words[1]);
-                            checked
+                            try
                             {
-                                _char_memory = new CharMassive(file_path, long.Parse(words[2]));
+                                checked
+                                {
+                                    _char_memory = new CharMassive(file_path, long.Parse(words[2]));
+                                }
                             }
-                            // try
-                            // {
-                            //     _char_memory = new CharMassive(_file_path, long.Parse(words[2]));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "input":
-                            checked
+                            try
                             {
-                                _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
+                                checked
+                                {
+                                    _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
+                                }
                             }
-                            // try
-                            // {
-                            //     _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "print":
-                            checked
+                            try
                             {
-                                Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
+                                checked
+                                {
+                                    Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
+                                }
                             }
-                            // try
-                            // {
-                            //     Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                     }
                 }
@@ -234,43 +223,43 @@ namespace lab1vage
                             }
                             string file_path_links = Path.Combine(directory_path, "links.txt");
                             string file_path_values = Path.Combine(directory_path, "values.txt");
-                            checked
+                            try
                             {
-                                _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
+                                checked
+                                {
+                                    _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
+                                }
                             }
-                            // try
-                            // {
-                            //     checked
-                            //     {
-                            //         _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
-                            //     }
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "input":
-                            _string_memory.Element_Write(int.Parse(words[1]), words[2]);
-                            // try
-                            // {
-                            //     _string_memory.Element_Write(int.Parse(words[1]), words[2]);
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            try
+                            {
+                                checked
+                                {
+                                    _string_memory.Element_Write(int.Parse(words[1]), words[2]);
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                         case "print":
-                            Console.WriteLine(_string_memory.Element_Definition(int.Parse(words[1])));
-                            // try
-                            // {
-                            //     Console.WriteLine(_string_memory.Element_Definition(int.Parse(words[1])));
-                            // }
-                            // catch (Exception ex)
-                            // {
-                            //     Console.WriteLine(ex.Message);
-                            // }
+                            try
+                            {
+                                checked
+                                {
+                                    Console.WriteLine(_string_memory.Element_Definition(int.Parse(words[1])));
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.Message);
+                            }
                             break;
                     }
                 }
