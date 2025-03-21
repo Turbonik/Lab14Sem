@@ -72,17 +72,18 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            string file_path = Path.Combine("Directory/IntDirectory", words[1]);
+                            
                             try
                             {
+                                string file_path = Path.Combine("Directory/IntDirectory", words[1]);
                                 checked
                                 {
                                     _int_memory = new IntMassive(file_path, long.Parse(words[2]));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                         case "input":
@@ -93,9 +94,9 @@ namespace lab1vage
                                     _int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                         case "print":
@@ -106,9 +107,9 @@ namespace lab1vage
                                     Console.WriteLine(_int_memory.Element_Definition(int.Parse(words[1])));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                     }
@@ -144,17 +145,18 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            string file_path = Path.Combine("Directory/CharDirectory", words[1]);
+                            
                             try
                             {
+                                string file_path = Path.Combine("Directory/CharDirectory", words[1]);
                                 checked
                                 {
                                     _char_memory = new CharMassive(file_path, long.Parse(words[2]));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                         case "input":
@@ -165,9 +167,9 @@ namespace lab1vage
                                     _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                         case "print":
@@ -178,9 +180,9 @@ namespace lab1vage
                                     Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                     }
@@ -230,9 +232,9 @@ namespace lab1vage
                                     _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                         case "input":
@@ -243,9 +245,9 @@ namespace lab1vage
                                     _string_memory.Element_Write(int.Parse(words[1]), words[2]);
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                         case "print":
@@ -256,9 +258,9 @@ namespace lab1vage
                                     Console.WriteLine(_string_memory.Element_Definition(int.Parse(words[1])));
                                 }
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
-                                Console.WriteLine(ex.Message);
+                                Console.WriteLine("Проверьте правильность ввода команды.");
                             }
                             break;
                     }
