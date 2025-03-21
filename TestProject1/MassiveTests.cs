@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using lab1vage;
+﻿using lab1vage;
 
 
 namespace Labtest
