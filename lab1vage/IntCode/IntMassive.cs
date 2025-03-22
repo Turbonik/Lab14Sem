@@ -17,6 +17,7 @@ namespace lab1vage
 
         public IntMassive(string file_path, long array_size)
         {
+            Console.WriteLine(array_size);
             long pages_count = (array_size + ARRAY_LENGTH - 1) / ARRAY_LENGTH;
             if (pages_count > MAX_PAGES)
             {

@@ -72,44 +72,70 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            
-                            try
+                            if (words.Length == 3)
                             {
                                 string file_path = Path.Combine("Directory/IntDirectory", words[1]);
-                                checked
+                                long number = 1;
+                                try
                                 {
-                                    _int_memory = new IntMassive(file_path, long.Parse(words[2]));
+                                    number = long.Parse(words[2]);
                                 }
+                                catch (Exception ex)
+                                {
+                                    Console.WriteLine("Размер оперативной памяти задан неверно.");
+                                }
+                                _int_memory = new IntMassive(file_path, number);
                             }
-                            catch (Exception)
+                            else
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Не хватает аргументов.");
                             }
                             break;
                         case "input":
+                            int index = 1;
                             try
                             {
-                                checked
-                                {
-                                    _int_memory.Element_Write(int.Parse(words[1]), int.Parse(words[2]));
-                                }
+                                index = int.Parse(words[1]);
                             }
                             catch (Exception)
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Ошибка ввода индекса");
+                            }
+                            int value = 1;
+                            try
+                            {
+                                value = int.Parse(words[2]);
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Ошибка ввода значения.");
+                            }
+                            if (words.Length == 3)
+                            {
+                                _int_memory.Element_Write(index, value);
+                            }
+                            else
+                            {
+                                Console.WriteLine("Не хватает аргументов.");
                             }
                             break;
                         case "print":
+                            index = 1;
                             try
                             {
-                                checked
-                                {
-                                    Console.WriteLine(_int_memory.Element_Definition(int.Parse(words[1])));
-                                }
+                                index = int.Parse(words[1]);
                             }
                             catch (Exception)
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Ошибка ввода индекса");
+                            }
+                            if (words.Length == 2)
+                            {
+                                Console.WriteLine(_int_memory.Element_Definition(index));
+                            }
+                            else
+                            {
+                                Console.WriteLine("Не хватает аргументов");
                             }
                             break;
                     }
@@ -145,44 +171,34 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            
-                            try
+                            if (words.Length == 3)
                             {
                                 string file_path = Path.Combine("Directory/CharDirectory", words[1]);
-                                checked
-                                {
-                                    _char_memory = new CharMassive(file_path, long.Parse(words[2]));
-                                }
+                                _char_memory = new CharMassive(file_path, long.Parse(words[2]));
                             }
-                            catch (Exception)
+                            else
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Не хватает аргументов.");
                             }
                             break;
                         case "input":
-                            try
+                            if (words.Length == 3)
                             {
-                                checked
-                                {
-                                    _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
-                                }
+                                _char_memory.Element_Write(int.Parse(words[1]), char.Parse(words[2]));
                             }
-                            catch (Exception)
+                            else
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Не хватает аргументов.");
                             }
                             break;
                         case "print":
-                            try
+                            if (words.Length == 2)
                             {
-                                checked
-                                {
-                                    Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
-                                }
+                                Console.WriteLine(_char_memory.Element_Definition(int.Parse(words[1])));
                             }
-                            catch (Exception)
+                            else
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Не хватает аргументов.");
                             }
                             break;
                     }
@@ -218,49 +234,40 @@ namespace lab1vage
                     switch (words[0].ToLower())
                     {
                         case "create":
-                            string directory_path = "Directory/StringDirectory/" + words[1];
-                            if (!Directory.Exists(directory_path))
+                            if (words.Length == 3)
                             {
-                                Directory.CreateDirectory(directory_path);
-                            }
-                            string file_path_links = Path.Combine(directory_path, "links.txt");
-                            string file_path_values = Path.Combine(directory_path, "values.txt");
-                            try
-                            {
-                                checked
+                                string directory_path = "Directory/StringDirectory/" + words[1];
+                                if (!Directory.Exists(directory_path))
                                 {
-                                    _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
+                                    Directory.CreateDirectory(directory_path);
                                 }
+                                string file_path_links = Path.Combine(directory_path, "links.txt");
+                                string file_path_values = Path.Combine(directory_path, "values.txt");
+                                _string_memory = new StringMassive(file_path_values, file_path_links, long.Parse(words[2]));
                             }
-                            catch (Exception)
+                            else
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Не хватает аргументов");
                             }
                             break;
                         case "input":
-                            try
+                            if (words.Length == 3)
                             {
-                                checked
-                                {
-                                    _string_memory.Element_Write(int.Parse(words[1]), words[2]);
-                                }
+                                _string_memory.Element_Write(int.Parse(words[1]), words[2]);
                             }
-                            catch (Exception)
+                            else
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Не хватает аргументов.");
                             }
                             break;
                         case "print":
-                            try
+                            if (words.Length == 2)
                             {
-                                checked
-                                {
-                                    Console.WriteLine(_string_memory.Element_Definition(int.Parse(words[1])));
-                                }
+                                Console.WriteLine(_string_memory.Element_Definition(int.Parse(words[1])));
                             }
-                            catch (Exception)
+                            else
                             {
-                                Console.WriteLine("Проверьте правильность ввода команды.");
+                                Console.WriteLine("Не хватает аргументов.");
                             }
                             break;
                     }
